@@ -2,11 +2,11 @@ set -e
 set -u
 
 
-model_name="StateLM-8B"
-model_path="/path/to/your/model"
+model_name="StateLM-4B"
+model_path="https://huggingface.co/lindsay21/StateLM-4B"
 
 command="vllm serve $model_path \
-        --tensor-parallel-size 8 \
+        --tensor-parallel-size 1 \
         --dtype float16 \
         --max_model_len 32768 \
         --disable-log-requests \
@@ -24,7 +24,7 @@ port_idx=(
     ["8080"]="0,1,2,3,4,5,6,7"
 )
 
-conda_env=/path/to/the/vllm/environment
+conda_env=/usr/local/envs/statelm
 # Launch a tmux session for each port and GPU pair
 for port in ${!port_idx[@]}; do
     command_cuda="export CUDA_VISIBLE_DEVICES=${port_idx[$port]}"
